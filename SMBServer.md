@@ -1,16 +1,30 @@
-
----
-layout: default
----
-
-Below is a list of Projects I have and am currently working on. Under each project title, there is a summary of the project and a link to another page with more details.
+[Back To Main Page](./index.md)
 
 # SMB File Server and VPN with TailScale
 
 I created a file server using Ubuntu 24.04 and setting it up to use SMB to share files locally on my home network and set up TailScale to enable the use of the server wherever I go
-[More Details](./SMBServer.md).
 
-## Header 2
+## Making The Ubuntu Machine
+
+### Installing Ubuntu 24.04
+Using a preconfigured Ventoy stick, I installed the OS onto the machine with default settings
+
+### Enabling RDP
+Once the OS is installed I wanted to be able to remote into the machine to configure more from my desk
+
+I intially tried out several different solutions but decided to stick with the native RDP within Ubuntu 24.04
+
+
+![RDP Settings](UBRDP.png)
+
+
+### Mounting The Share Drive
+I got a separate drive for this project that I installed before installing the OS
+I mounted it using the Disks app in Ubuntu and formatted it as EXT4
+
+
+![RDP Settings](DisksUb.png)
+
 
 > This is a blockquote following a header.
 >

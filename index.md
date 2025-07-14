@@ -2,17 +2,12 @@
 layout: default
 ---
 
-Text can be **bold**, _italic_, ~~strikethrough~~ or `keyword`.
+Below is a list of Projects I have and am currently working on. Under each project title, there is a summary of the project and a link to another page with more details.
 
-[Link to another page](./another-page.html).
+# SMB File Server and VPN with TailScale
 
-There should be whitespace between paragraphs.
-
-There should be whitespace between paragraphs. We recommend including a README, or a file with information about your project.
-
-# Header 1
-
-This is a normal paragraph following a header. GitHub is a code hosting platform for version control and collaboration. It lets you and others work together on projects from anywhere.
+I created a file server using Ubuntu 24.04 and setting it up to use SMB to share files locally on my home network and set up TailScale to enable the use of the server wherever I go
+[More Details](./SMBServer.md).
 
 ## Header 2
 

@@ -25,7 +25,34 @@ I mounted it using the Disks app in Ubuntu and formatted it as EXT4
 
 ![RDP Settings](DisksUb.png)
 
+### Setting Up SMB
 
+I opened up the terminal and installed Samba using
+
+```bash
+sudo apt update
+sudo apt install samba
+```
+Once it was done installing I created the main share folder on the new drive I just mounted
+
+```bash
+mkdir /media/izo/Izo-FileShare/AptShare
+```
+
+I then edited the config file 
+```bash
+sudo nano /etc/samba/smb.conf
+[AptShare]
+    comment = My Apartment File Server
+    path = /media/izo/Izo-FileShare/AptShare
+    read only = no
+    browsable = yes
+```
+Then I restarted the service and allowed for samba traffic to the machine
+```bash
+sudo service smbd restart
+sudo ufw allow samba
+```
 ### Configuring TailScale
 TailScale is relatively easy to set up as there is a set up that walks you through when you create your account
 I used my Google account to sign up for TailScale and added my phone, PC, and my server

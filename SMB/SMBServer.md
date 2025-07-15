@@ -1,4 +1,4 @@
-[Back To Main Page](./index.md)
+[Back To Main Page](../index.md)
 
 # SMB File Server and VPN with TailScale
 

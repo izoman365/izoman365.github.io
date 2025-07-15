@@ -1,4 +1,4 @@
-[Back To Main Page](./izoman365.github.io/index.md)
+[Back To Main Page](./izoman365.github.io)
 
 # SMB File Server and VPN with TailScale
 

@@ -7,5 +7,5 @@ Below is a list of Projects I have and am currently working on. Under each proje
 # SMB File Server and VPN with TailScale
 
 I created a file server using Ubuntu 24.04 and setting it up to use SMB to share files locally on my home network and set up TailScale to enable the use of the server wherever I go
-[More Details](./SMBServer.md). (Documentation In Progress!)
+[More Details](./SMB/SMBServer.md). (Documentation In Progress!)
 

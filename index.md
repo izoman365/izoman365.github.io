@@ -11,4 +11,4 @@ I created a file server using Ubuntu 24.04 and setting it up to use SMB to share
 
 # NGFW Setup (Juniper SRX300)
 
-I configured a Next Generation Firewall for an Intrusion Decetion System and Web Filtering. [More Details(In Progress)](./FW/FW.md)
+# I configured a Next Generation Firewall for an Intrusion Decetion System and Web Filtering. [More Details(In Progress)](./FW/FW.md)

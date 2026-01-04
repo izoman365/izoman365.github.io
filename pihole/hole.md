@@ -1,85 +1,58 @@
 
 [Back To Main Page](../index.md)
 
-# SMB File Server and VPN with TailScale
+# Pi-Hole Home DNS Server with Ad-Block
 
-I created a file server using Ubuntu 24.04 and setting it up to use SMB to share files locally on my home network and set up TailScale to enable the use of the server wherever I go
+I Configured Pi-Hole on a Raspberry Pi Zero 2 W with the Ubuntu 25.10 Server Operating System
 
 ## Making The Ubuntu Machine
 
-### Installing Ubuntu 24.04
-Using a preconfigured Ventoy stick, I installed the OS onto the machine with default settings
-
-### Enabling RDP
-Once the OS is installed I wanted to be able to remote into the machine to configure more from my desk
-
-I intially tried out several different solutions but decided to stick with the native RDP within Ubuntu 24.04
-
-
-![RDP Settings](UBRDP.png)
-
-
-### Mounting The Share Drive
-I got a separate drive for this project that I installed before installing the OS
-I mounted it using the Disks app in Ubuntu and formatted it as EXT4
-
-
-![RDP Settings](DisksUb.png)
-
-### Setting Up SMB
-
-I opened up the terminal and installed Samba using
-
+### Installing Ubuntu 25.10
+I used the [Raspberry Pi Imager](https://www.raspberrypi.com/software/) to install [Ubuntu 25.10 Server] (https://ubuntu.com/download/server)
+Within the Pi Imager, I set custom settings to enable set up the local login information, enable SSH, and gave it the WiFi login credentials.
+I then ran updates and installed net-tools on the Pi
+```bash
 ```bash
 sudo apt update
-sudo apt install samba
+sudo apt-get upgrade
+sudo apt install net-tools
 ```
-Once it was done installing I created the main share folder on the new drive I just mounted
 
+### Pi Hole Setup
+Pi-Hole requires a static IP address to function properly
+I set my Pi to have a static IP inside the my home network's router
+After I restarted the Pi to make sure it gets the assigned IP
+
+I started the automated install of Pi-Hole with the following commands:
 ```bash
-mkdir /media/izo/Izo-FileShare/AptShare
+sudo -i
+curl -sSL https://install.pi-hole.net | bash
 ```
+The installer then guided me through the main process
 
-I then edited the config file 
+### Setting The DNS On The PC
+On a Windows PC, I simply went the network connections and entered the IP of my Pi in both the primary and secondary DNS addresses
+
+Linux was a bit more involved
+I opened the terminal and entered the following:
 ```bash
-sudo nano /etc/samba/smb.conf
-[AptShare]
-    comment = My Apartment File Server
-    path = /media/izo/Izo-FileShare/AptShare
-    read only = no
-    browsable = yes
+sudo systemctl disable systemd-resolved
+sudo systemctl stop systemd-resolved
 ```
-Then I restarted the service and allowed for samba traffic to the machine
-```bash
-sudo service smbd restart
-sudo ufw allow samba
-```
-### Configuring TailScale
-TailScale is relatively easy to set up as there is a set up that walks you through when you create your account
-I used my Google account to sign up for TailScale and added my phone, PC, and my server
+This stopped the auto resolution for DNS queries that bypass the Pi
+I went to /etc/resolv.conf and edited nameserver to have the IP of my Pi
 
-![TailScale PC Console](PCTailScale.png)
+### Setting DNS On The Whole Network
+You can set the DNS to run through the whole network if you set the DNS in your router to be the Pi
 
 
-After getting TailScale on all of my devices, I can get to my server anywhere I am at.
+### Finished Set Up
+The Setup is now done and I am able to manage my own DNS
 
-#### Setting up TailScale on your Phone
-Tailscale is on the App Store and the Google Play Store
-Logging into it will sign your phone up to be a part of the network and will have your phone show all your connections
+![Pi-Hole Page](pihole.png)
 
-![TailScale Mobile App](TSMobile.png)
 
-### Getting Access To My Server On My Phone
-With Tailscale on my phone, I still needed an app to view the files and I could not get the files app for Google to work for me
-I instead got Cx File Explorer from the Google Play Store
+### Official Documentation
+The documentaion from the team that manages Pi-Hole can be found [here.](https://docs.pi-hole.net/)
 
-After installing the app I wenth through the following process:
 
-1.  Network Tab
-2.  New Location
-3.  Remote Tab
-4.  SMB
-5.  Entered the host IP from TailScale
-6.  username and pw from the SMB setup
-
-   ![File Viewer App](FilerViewerMobile.png)

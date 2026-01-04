@@ -12,7 +12,6 @@ I used the [Raspberry Pi Imager](https://www.raspberrypi.com/software/) to insta
 Within the Pi Imager, I set custom settings to enable set up the local login information, enable SSH, and gave it the WiFi login credentials.
 I then ran updates and installed net-tools on the Pi
 ```bash
-```bash
 sudo apt update
 sudo apt-get upgrade
 sudo apt install net-tools

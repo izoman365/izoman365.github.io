@@ -16,6 +16,10 @@ I created a file server using Ubuntu 24.04 and setting it up to use SMB to share
 I created a DNS server using a Raspberry Pi Zero 2 W and Pi-Hole 
 [More Details](./pihole/hole.md)
 
+# CVE Daily Updater
+I created a service to pull critical CVEs from the National Vulnerability Database and create a summary for me using python and Google Gemini
+[More Details(In Progress)](./NVD/NVD.md)
+
 <!-- # NGFW Setup (Juniper SRX300)
 
  I configured a Next Generation Firewall for an Intrusion Decetion System and Web Filtering. [More Details(In Progress)](./FW/FW.md) -->

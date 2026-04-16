@@ -269,7 +269,7 @@ I need to make cron jobs to have the server update the csv with new info daily a
 
 
 
-
+#Next Steps: Working Getting the mp3 to play on the google nest speaker
 
 
 

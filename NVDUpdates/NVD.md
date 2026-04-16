@@ -1,6 +1,8 @@
 ---
 layout: default
 ---
+[Back To Main Page](../index.md)
+
 
 I created a script to call on my google home to pull CVEs from the National Vulnerability Datbase with a CVSS score of 7 or higher to put into a CSV to be summarized by Gemini and dictated to me through my google home speaker
 

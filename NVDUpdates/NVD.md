@@ -30,6 +30,7 @@ pip install requests
 pip install pychromecast
 pip install pandas
 pip install google-generativeai
+pip install gTTS
 
 ```
 
@@ -37,7 +38,7 @@ pip install google-generativeai
 
 The following is the script to pull from the NVD and putting it into the CSV
 
-```bash
+```python
 import requests
 import csv
 from datetime import datetime, timedelta, timezone
@@ -85,14 +86,26 @@ print(f"Saved {len(results)} CVEs")
 ```
 
 
-This is the script to get the summary made
+This is the script to get the summary made and create a txt document as well as a mp3 file to send to the google nest
 
-```bash
+```python
 import requests
 import csv
+import pandas as pd
 from datetime import datetime, timedelta, timezone
 
-# --- time window (last 24h) ---
+from google import genai
+from gtts import gTTS
+import os
+
+# ----------------------------
+# CONFIG
+# ----------------------------
+API_KEY = "YOUR_GEMINI_API_KEY"
+
+# ----------------------------
+# 1. GET CVEs FROM NVD (LAST 24 HOURS)
+# ----------------------------
 now = datetime.now(timezone.utc)
 yesterday = now - timedelta(days=1)
 
@@ -125,11 +138,141 @@ for item in data.get("vulnerabilities", []):
             "description": cve["descriptions"][0]["value"]
         })
 
-# --- write CSV ---
+# ----------------------------
+# 2. SAVE RAW CSV
+# ----------------------------
 with open("cve_report.csv", "w", newline="", encoding="utf-8") as f:
     writer = csv.DictWriter(f, fieldnames=["cve_id", "score", "description"])
     writer.writeheader()
     writer.writerows(results)
 
-print(f"Saved {len(results)} CVEs")
+df = pd.DataFrame(results)
+text_block = df.to_string(index=False)
+
+# ----------------------------
+# 3. GEMINI SUMMARY
+# ----------------------------
+client = genai.Client(api_key=API_KEY)
+
+prompt = f"""
+You are a cybersecurity analyst.
+
+Write a concise SOC morning briefing.
+
+Focus on:
+- Critical vulnerabilities
+- Remote code execution risks
+- Likely exploitation
+- Keep it suitable for spoken audio (no bullet spam)
+
+Data:
+{text_block}
+"""
+
+response = client.models.generate_content(
+    model="gemini-2.5-flash",
+    contents=prompt
+)
+
+summary = response.text
+
+# ----------------------------
+# 4. BUILD SOC REPORT (FORMATTED TXT)
+# ----------------------------
+now_str = datetime.now().strftime("%Y-%m-%d %H:%M UTC")
+
+report = f"""
+========================================
+SOC MORNING CYBER THREAT REPORT
+========================================
+
+Date: {now_str}
+Source: NVD API (Last 24 Hours)
+Generated: Automated Python CVE Pipeline
+
+----------------------------------------
+EXECUTIVE SUMMARY
+----------------------------------------
+{summary}
+
+----------------------------------------
+PRIORITY ACTION ITEMS
+----------------------------------------
+- Review CVEs with CVSS ≥ 9 immediately
+- Prioritize remotely exploitable vulnerabilities
+- Check if affected systems are exposed externally
+- Validate against CISA KEV catalog if applicable
+
+----------------------------------------
+END OF REPORT
+========================================
+"""
+
+# OVERWRITE TXT FILE
+with open("cve_briefing.txt", "w", encoding="utf-8") as f:
+    f.write(report)
+
+# ----------------------------
+# 5. TEXT-TO-SPEECH (MP3)
+# ----------------------------
+tmp_mp3 = "cve_briefing.mp3.tmp"
+final_mp3 = "cve_briefing.mp3"
+
+tts = gTTS(text=summary, lang="en")
+tts.save(tmp_mp3)
+
+# atomic replace (safer overwrite)
+os.replace(tmp_mp3, final_mp3)
+
+print("Report generated successfully.")
+print("TXT: cve_briefing.txt")
+print("MP3: cve_briefing.mp3")
 ```
+# Creating the Web Service
+
+I needed a way to host my mp3 so that the Google Nest could grab it
+I set up the server to be able to share the mp3 through html for it to be grabbed as a system service to run on boot
+```bash
+sudo nano /etc/systemd/system/cve-http.service
+
+[Unit]
+Description=CVE HTTP Server
+After=network.target
+
+[Service]
+WorkingDirectory=/home/youruser/cve_project
+ExecStart=/usr/bin/python3 -m http.server 8000
+Restart=always
+User=youruser
+
+[Install]
+WantedBy=multi-user.target
+
+```
+Then enabled the service
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable cve-http.service
+sudo systemctl start cve-http.service
+```
+
+#Cron Jobs
+
+I need to make cron jobs to have the server update the csv with new info daily and update the txt and mp3 summaries
+
+```bash
+0 7 * * * /media/izo/Izo-FileShare/AptShare/NVD/venv/bin/python /media/izo/Izo-FileShare/AptShare/NVD/NVD.py
+0 7 * * * /media/izo/Izo-FileShare/AptShare/NVD/venv/bin/python /media/izo/Izo-FileShare/AptShare/NVD/Gemi-Summary.py
+```
+
+
+
+
+
+
+
+
+
+
+

@@ -322,7 +322,7 @@ sudo systemctl enable cve-http.service
 sudo systemctl start cve-http.service
 ```
 
-#Cron Jobs
+# Cron Jobs
 
 I need to make cron jobs to have the server update the csv with new info daily and update the txt and mp3 summaries
 
@@ -332,10 +332,9 @@ I need to make cron jobs to have the server update the csv with new info daily a
 45 6 * * * cd /media/izo/Izo-FileShare/AptShare/NVD/ && /media/izo/Izo-FileShare/AptShare/NVD/venv/bin/python /media/izo/Izo-FileShare/AptShare/NVD/Cast-Audio.py
 ```
 
+Note: To use the /media share that is shown in this example, you must tell the crontab to switch to the /media driectory you are wanting to work with to get it to work
+If you do not do that, the first statement in the cron job statements are not needed
 
-
-
-#Next Steps: The cron jobs are not working for some reason and I am looking into that
 
 
 

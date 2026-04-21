@@ -230,6 +230,68 @@ print("Report generated successfully.")
 print("TXT: cve_briefing.txt")
 print("MP3: cve_briefing.mp3")
 ```
+
+This script is for casting the mp3 from my server to my Google Nest Speaker
+
+```python
+import pychromecast
+import time
+
+# ----------------------------
+# CONFIG
+# ----------------------------
+CAST_NAME = "SpeakerName" 
+MEDIA_URL = "http://(server-name):8000/cve_briefing.mp3"
+
+# ----------------------------
+# FIND DEVICE
+# ----------------------------
+print("Searching for Chromecast devices...")
+
+chromecasts, browser = pychromecast.get_chromecasts()
+
+cast = None
+for cc in chromecasts:
+    if cc.name == CAST_NAME:
+        cast = cc
+        break
+
+if cast is None:
+    print(f"ERROR: Device '{CAST_NAME}' not found")
+    exit(1)
+
+print(f"Found device: {cast.name}")
+
+# ----------------------------
+# CONNECT
+# ----------------------------
+cast.wait()
+
+#set volume
+cast.set_volume(0.5)
+
+mc = cast.media_controller
+
+# ----------------------------
+# PLAY MEDIA
+# ----------------------------
+print("Starting playback...")
+
+mc.play_media(MEDIA_URL, "audio/mp3")
+
+# Wait until active
+mc.block_until_active()
+
+# Ensure playback starts
+mc.play()
+
+# wait and confirm
+time.sleep(2)
+
+print("Casting successful.")
+```
+
+
 # Creating the Web Service
 
 I needed a way to host my mp3 so that the Google Nest could grab it

@@ -290,6 +290,7 @@ time.sleep(2)
 
 print("Casting successful.")
 ```
+Note: It only casts using IP. I could not get it to work via hostname
 
 
 # Creating the Web Service
@@ -326,14 +327,15 @@ sudo systemctl start cve-http.service
 I need to make cron jobs to have the server update the csv with new info daily and update the txt and mp3 summaries
 
 ```bash
-0 7 * * * /media/izo/Izo-FileShare/AptShare/NVD/venv/bin/python /media/izo/Izo-FileShare/AptShare/NVD/NVD.py
-0 7 * * * /media/izo/Izo-FileShare/AptShare/NVD/venv/bin/python /media/izo/Izo-FileShare/AptShare/NVD/Gemi-Summary.py
+0 5 * * * /media/izo/Izo-FileShare/AptShare/NVD/venv/bin/python /media/izo/Izo-FileShare/AptShare/NVD/NVD.py
+0 6 * * * /media/izo/Izo-FileShare/AptShare/NVD/venv/bin/python /media/izo/Izo-FileShare/AptShare/NVD/Gemi-Summary.py
+45 6 * * * /media/izo/Izo-FileShare/AptShare/NVD/venv/bin/python /media/izo/Izo-FileShare/AptShare/NVD/Cast-Audio.py
 ```
 
 
 
 
-#Next Steps: Working Getting the mp3 to play on the google nest speaker
+#Next Steps: The cron jobs are not working for some reason and I am looking into that
 
 
 

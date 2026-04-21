@@ -327,9 +327,9 @@ sudo systemctl start cve-http.service
 I need to make cron jobs to have the server update the csv with new info daily and update the txt and mp3 summaries
 
 ```bash
-0 5 * * * /media/izo/Izo-FileShare/AptShare/NVD/venv/bin/python /media/izo/Izo-FileShare/AptShare/NVD/NVD.py
-0 6 * * * /media/izo/Izo-FileShare/AptShare/NVD/venv/bin/python /media/izo/Izo-FileShare/AptShare/NVD/Gemi-Summary.py
-45 6 * * * /media/izo/Izo-FileShare/AptShare/NVD/venv/bin/python /media/izo/Izo-FileShare/AptShare/NVD/Cast-Audio.py
+0 5 * * * cd /media/izo/Izo-FileShare/AptShare/NVD/ && /media/izo/Izo-FileShare/AptShare/NVD/venv/bin/python /media/izo/Izo-FileShare/AptShare/NVD/NVD.py
+0 6 * * * cd /media/izo/Izo-FileShare/AptShare/NVD/ && /media/izo/Izo-FileShare/AptShare/NVD/venv/bin/python /media/izo/Izo-FileShare/AptShare/NVD/Gemi-Summary.py
+45 6 * * * cd /media/izo/Izo-FileShare/AptShare/NVD/ && /media/izo/Izo-FileShare/AptShare/NVD/venv/bin/python /media/izo/Izo-FileShare/AptShare/NVD/Cast-Audio.py
 ```
 
 

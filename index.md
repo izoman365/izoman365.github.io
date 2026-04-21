@@ -18,7 +18,7 @@ I created a DNS server using a Raspberry Pi Zero 2 W and Pi-Hole
 
 # CVE Daily Updater
 I created a service to pull critical CVEs from the National Vulnerability Database and create a summary for me using python and Google Gemini
-[More Details(In Progress)](./NVDUpdates/NVD.md)
+[More Details](./NVDUpdates/NVD.md)
 
 <!-- # NGFW Setup (Juniper SRX300)
 
